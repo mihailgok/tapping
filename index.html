@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tapping</title>
+
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="main">
+        <div class="container">
+            <div class="main__tap">
+                <img src="icon-512.png" alt="">
+            </div>
+        </div>
+        <div class="counter">0</div>
+    </div>
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        let main__tap = document.querySelector(".main__tap");
+        let counter = Number(localStorage.getItem("tap-count")) || 0;
+        let counter_div = document.querySelector(".counter");
+        let tapping_now = false;
+
+        counter_div.innerHTML = counter;
+
+
+        main__tap.addEventListener("click", (e) => {
+            if(!tapping_now) {
+                main__tap.classList.add("tapping");
+            }
+            tapping_now = true;
+            counter += 1;
+            counter_div.innerHTML = counter;
+
+            let showTap = document.createElement("span");
+            showTap.innerHTML = 1;
+            showTap.classList.add("show_tap");
+            
+            showTap.style.top = e.clientY + "px";
+            showTap.style.left = e.clientX + "px";
+            document.body.append(showTap);
+
+            localStorage.setItem("tap-count", counter);
+
+            setTimeout(() => {
+                main__tap.classList.remove("tapping");
+                tapping_now = false;
+                showTap.remove();
+            }, 500)
+        });
+    })
+</script>
+
+</html>
